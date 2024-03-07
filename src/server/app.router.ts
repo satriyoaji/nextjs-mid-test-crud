@@ -26,6 +26,8 @@ import {
   userParams,
   updateUserSchema,
 } from "./user/user.schema";
+import {loginAuthSchema} from "~/server/auth/auth.schema";
+import {loginAuthController} from "~/server/auth/auth.controller";
 
 const t = initTRPC.create({
   transformer: superjson,
@@ -70,6 +72,10 @@ export const appRouter = t.router({
   getUsers: t.procedure
     .input(filterQuery)
     .query(({ input }) => findAllUsersController({ filterQuery: input })),
+
+  loginAuth: t.procedure
+    .input(loginAuthSchema)
+    .mutation(({ input }) => loginAuthController({ input })),
 });
 
 export type AppRouter = typeof appRouter;
