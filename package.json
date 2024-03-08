@@ -1,5 +1,8 @@
 {
   "private": true,
+  "prisma": {
+    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -17,6 +20,8 @@
     "@trpc/next": "^10.0.0-proxy-beta.26",
     "@trpc/react-query": "^10.0.0-proxy-beta.26",
     "@trpc/server": "^10.0.0-proxy-beta.26",
+    "@types/bcryptjs": "^2.4.6",
+    "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "date-fns": "^2.29.3",
     "next": "latest",
@@ -26,6 +31,7 @@
     "react-toastify": "^9.0.8",
     "superjson": "^1.11.0",
     "tailwind-merge": "^1.7.0",
+    "ts-node": "^10.9.2",
     "zod": "^3.19.1"
   },
   "devDependencies": {
