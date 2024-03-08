@@ -44,6 +44,10 @@ export const loginAuthController = async ({
 }: {
   input: LoginAuthInput;
 }) => {
+  return {
+    status: "success",
+    user: input,
+  };
   // try {
   //   const updatedUser = await prisma.user.update({
   //     where: { id: paramsInput.userId },

@@ -8,6 +8,7 @@ import {LoadingButton} from "~/components/LoadingButton";
 import {SubmitHandler, useForm} from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {useQueryClient} from "@tanstack/react-query";
+import {useRouter} from "next/router";
 
 const loginSchema = object({
   email: string().min(5, "Email is required"),
@@ -19,6 +20,7 @@ type LoginInput = TypeOf<typeof loginSchema>;
 const LoginForm: NextPage = () => {
   // const [loading, setLoading] = useState(false);
   const queryClient = useQueryClient();
+  const router = useRouter()
   const { isLoading, mutate: loginUser } = trpc.loginAuth.useMutation({
     onSuccess() {
       toast("logged in successfully", {
@@ -26,6 +28,7 @@ const LoginForm: NextPage = () => {
         position: "top-right",
       });
       // redirect to "/"
+      router.push("/user")
     },
     onError(error) {
       toast(error.message, {
