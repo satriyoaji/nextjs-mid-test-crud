@@ -4,7 +4,8 @@
 
 Prerequisite:
 - Docker
-- npm or Yarn
+- Node
+- npm or Yarn (with npx)
 
 #### Installation & Running
 1. Run `yarn install` or `npm install` 
