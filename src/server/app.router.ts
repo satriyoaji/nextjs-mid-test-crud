@@ -75,7 +75,11 @@ export const appRouter = t.router({
 
   loginAuth: t.procedure
     .input(loginAuthSchema)
-    .mutation(({ input }) => loginAuthController({ input })),
+    .mutation(({ input }) => loginAuthController({ paramsInput: {
+        email: input.email,
+        password: input.password,
+      }
+    })),
 });
 
 export type AppRouter = typeof appRouter;

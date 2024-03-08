@@ -4,6 +4,8 @@ import {
   RegisterAuthInput,
   LoginAuthInput,
 } from "./auth.schema";
+import {compare} from "bcryptjs";
+import {sign} from "jsonwebtoken";
 
 const prisma = new PrismaClient();
 
@@ -40,60 +42,69 @@ export const registerAuthController = async ({
 };
 
 export const loginAuthController = async ({
-  input,
+  paramsInput,
 }: {
-  input: LoginAuthInput;
+  paramsInput: LoginAuthInput;
 }) => {
-  return {
-    status: "success",
-    user: input,
-  };
-  // try {
-  //   const updatedUser = await prisma.user.update({
-  //     where: { id: paramsInput.userId },
-  //     data: input,
-  //   });
-  //
-  //   return {
-  //     status: "success",
-  //     user: updatedUser,
-  //   };
-  // } catch (error) {
-  //   if (error instanceof Prisma.PrismaClientKnownRequestError) {
-  //     if (error.code === "P2025") {
-  //       throw new TRPCError({
-  //         code: "CONFLICT",
-  //         message: "User with that email already exists",
-  //       });
-  //     }
-  //   }
-  //   throw error;
-  // }
+  try {
+    const user = await prisma.user.findUnique({
+      where: { email: paramsInput.email },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        password: true,
+        address: true,
+      },
+    });
+
+    if (!user) {
+      throw new TRPCError({
+        code: "NOT_FOUND",
+        message: "User with that Email not found",
+      });
+    }
+
+    if (user && (await compare(paramsInput.password, user.password!))) {
+      // Authenticate user with jwt
+      const jwtSecret = process.env.JWT_SECRET
+      const token = sign(
+        { id: user.id, email: user.email },
+        jwtSecret ? jwtSecret : "secret_key",
+        {
+          expiresIn: process.env.JWT_REFRESH_EXPIRATION,
+        }
+      );
+      return {
+        status: "success",
+        user: exclude(user, ["password"]),
+        token: token
+      };
+    } else {
+      throw new TRPCError({
+        code: "UNAUTHORIZED",
+        message: "Invalid credentials",
+      });
+    }
+
+  } catch (error) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error.code === "P2025") {
+        throw new TRPCError({
+          code: "CONFLICT",
+          message: "User with that email already exists",
+        });
+      }
+    }
+    throw error;
+  }
 };
 
-export const findUserController = async ({
-  // paramsInput,
-}: {
-  // paramsInput: ParamsInput;
-}) => {
-  // try {
-  //   const user = await prisma.user.findFirst({
-  //     where: { id: paramsInput.userId },
-  //   });
-  //
-  //   if (!user) {
-  //     throw new TRPCError({
-  //       code: "NOT_FOUND",
-  //       message: "User with that ID not found",
-  //     });
-  //   }
-  //
-  //   return {
-  //     status: "success",
-  //     user,
-  //   };
-  // } catch (error) {
-  //   throw error;
-  // }
-};
+function exclude(user: any, keys: Array<string>) {
+  for (let key of keys) {
+    delete user[key];
+  }
+  return user;
+}
+
 

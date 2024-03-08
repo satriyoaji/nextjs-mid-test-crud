@@ -22,7 +22,7 @@ const LoginForm: NextPage = () => {
   const queryClient = useQueryClient();
   const router = useRouter()
   const { isLoading, mutate: loginUser } = trpc.loginAuth.useMutation({
-    onSuccess() {
+    onSuccess(res) {
       toast("logged in successfully", {
         type: "success",
         position: "top-right",
