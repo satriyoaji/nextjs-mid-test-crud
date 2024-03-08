@@ -16,5 +16,5 @@ Prerequisite:
 ```cmd
 docker-compose up -d
 ```
-then wait e minute for the service running until success
-6. Run the app `yarn dev` or `npm run dev`. For the default, The service will be available on `localhost:3000` on your local 
+then wait e minute for the service running until success.
+Then Run the app using command `yarn dev` or `npm run dev`. For the default, The service will be available on `localhost:3000` on your local 
