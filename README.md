@@ -1,25 +1,19 @@
-# Build a Full Stack tRPC CRUD App with Next.js and Prisma ORM
+## Fullstack Mid Developer Test
 
-This article will teach you how to build a full-stack tRPC CRUD (Create, Read, Update, and Delete) app with Next.js. The tRPC API will be built on Next.js edge runtime and the tRPC client will be created with React.js. For data storage, we'll use Prisma ORM to query and mutate an SQLite database.  
+### Guidelines
 
-![Build a Full Stack tRPC CRUD App with Next.js and Prisma ORM](https://codevoweb.com/wp-content/uploads/2022/10/Build-a-Full-Stack-tRPC-CRUD-App-with-Next.js-and-Prisma-ORM.webp)
+Prerequisite:
+- Docker
+- npm or Yarn
 
-## Topics Covered
-
-- Run the Next.js tRPC CRUD App Locally
-- Setup Next.js as a Monorepo
-- Setup Prisma and Create the Database Model
-- Create the Next.js tRPC API
-    - Create Zod Validation Schemas
-    - Create the tRPC Procedures
-    - Create the tRPC Server
-    - Connect the tRPC Router to Next.js
-- Create the Next.js tRPC Client
-    - Create Reusable React Components
-    - React Query Create Record Mutation
-    - React Query Update Record Mutation
-    - React Query Delete Record Mutation
-    - React Query Fetch All Records Query
-
-Read the entire article here: [https://codevoweb.com/build-a-fullstack-trpc-crud-app-with-nextjs/](https://codevoweb.com/build-a-fullstack-trpc-crud-app-with-nextjs/)
-
+#### Installation & Running
+1. Run `yarn install` or `npm install` 
+2. Copy file `.env.example` to `.env` for application variables 
+3. Fill out the DB connection config based on your Dockerized Postgres DB (docker compose file is on `docker-compose.yml` file) 
+4. Run the DB migration using command `npx prisma migrate dev --name init`
+5. Run the app containers using Docker compose
+```cmd
+docker-compose up -d
+```
+then wait e minute for the service running until success
+6. Run the app `yarn dev` or `npm run dev`. For the default, The service will be available on `localhost:3000` on your local 
