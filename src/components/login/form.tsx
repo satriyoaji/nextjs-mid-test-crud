@@ -84,6 +84,7 @@ const LoginForm: NextPage = () => {
             Password
           </label>
           <input
+            type={'password'}
             className={twMerge(
               `appearance-none border border-gray-400 rounded w-full py-3 px-3 text-gray-700 mb-2  leading-tight focus:outline-none`,
               `${errors["password"] && "border-red-500"}`
